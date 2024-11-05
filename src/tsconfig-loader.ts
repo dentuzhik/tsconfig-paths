@@ -48,6 +48,15 @@ export function tsConfigLoader({
   return loadResult;
 }
 
+function makeAbsolute(filename: string): string {
+  let absolutePath = filename;
+
+  if (!path.isAbsolute(filename)) {
+    absolutePath = path.join(process.cwd(), filename);
+  }
+  return absolutePath;
+}
+
 function loadSyncDefault(
   cwd: string,
   filename?: string,
@@ -62,6 +71,7 @@ function loadSyncDefault(
     cwd = filename;
   }
 
+  cwd = makeAbsolute(cwd);
   const tsConfigPath = findConfigFile(
     path.dirname(cwd),
     tsSys.fileExists,
